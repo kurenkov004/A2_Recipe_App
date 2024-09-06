@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Database</title>
+    <style>
+        body {background-color: lightgrey; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
+        h1, h2 {text-transform: uppercase;}
+        /* p {color: lightgray;} */
+        ul {list-style-type:circle; padding-right: 10px;}
+        .main-container {display: grid; grid-template-areas: 'header header' 'main right'; gap: 10px; width: 60%; margin: auto; margin-top: 5%;}
+        .main-container > div {background-color: blanchedalmond;padding: 20px 0; border-radius: 5px;}
+        .app-header {grid-area: header; text-align: center;}
+        .intro {grid-area: main;text-align: left;}
+        .app-info {grid-area: right; text-align: left; padding: 5px;}
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="app-header">
+            <h1>RECIPE APP (in developement)</h1>
+        </div>
+        <div class="intro">
+            <h2 style="padding: 10px;">About the App</h2>
+            <p style="padding: 10px;">This project is part of careerFoundry's Python for Web Developers Specialization course. The main goal is to use the Django framework to develop a web application with multiple users and an admin panel.</p>
+            <p style="padding: 10px;">This app specifically is a Recipe web app which can create, read, and modify recipes, as well as search for recipes by ingredients. It also includes an admin panel on the backend for data handling and visualization.</p>
+        </div>
+        <div class="app-info">
+            <h2 style="padding: 5px;">Key Features</h2>
+            <ul>
+                <li>allows for user authentication, login, logout</li>
+                <li>users can search for recipes by ingredients</li>
+                <li>each recipe is automatically rated by difficulty level</li>
+                <li>more recipe details displayed per user request</li>
+                <li>app receives user input and handles errors effectively</li>
+                <li>user-added recipes sorted in a SQLite3 database</li>
+                <li>Django Admin dashboard included</li>
+                <li>shows statistics and visualizations based on trends and data analysis</li>
+            </ul>
+        </div>     
+    </div>
+</body>
+</html>
