@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,19 +9,23 @@
     <style>
         body {background-color: lightgrey; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
         h1, h2 {text-transform: uppercase;}
-        /* p {color: lightgray;} */
+        p, li {font-size: 25px;}
         ul {list-style-type:circle; padding-right: 10px;}
-        .main-container {display: grid; grid-template-areas: 'header header' 'main right'; gap: 10px; width: 60%; margin: auto; margin-top: 5%;}
-        .main-container > div {background-color: blanchedalmond;padding: 20px 0; border-radius: 5px;}
-        .app-header {grid-area: header; text-align: center;}
-        .intro {grid-area: main;text-align: left;}
-        .app-info {grid-area: right; text-align: left; padding: 5px;}
+        .main-container {display: grid; grid-template-areas: 'header header header header ' 'main image image right'; gap: 10px; width: 60%; margin: auto; margin-top: 5%;}
+        .main-container > div {padding: 20px 20px; border-radius: 5px;}
+        .app-header {grid-area: header; text-align: center; background-color: rgb(187, 187, 187);}
+        .intro {grid-area: main;text-align: left; border: solid 1px; border-color: darkslategray;}
+        .app-info {grid-area: right; text-align: left;  padding: 5px; border: solid 1px; border-color: darkslategray;}
+        .welcome-image {grid-area: image; text-align: center;min-width: 500px; }
     </style>
 </head>
 <body>
     <div class="main-container">
         <div class="app-header">
             <h1>RECIPE APP (in developement)</h1>
+        </div>
+        <div class="welcome-image">
+            <img src="{% static 'recipes/images/landing_page_image.jpg' %}" alt="welcome-image" width="100%" height="auto">
         </div>
         <div class="intro">
             <h2 style="padding: 10px;">About the App</h2>

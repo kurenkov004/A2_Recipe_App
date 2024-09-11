@@ -3,10 +3,11 @@ from .models import Recipe
 
 # Create your tests here.
 class RecipeModelTest(TestCase):
+
   def setUpTestData():
     #set up non-modified objects used by all test methods
-    Recipe.objects.create(name="Tea", ingredients="Tea leaves, Water", cooking_time=5, )
-  
+    Recipe.objects.create(name="Test Recipe", ingredients="Tea leaves, Water", cooking_time=5, difficulty='Easy', )
+
   #------------------------------NAME TESTS------------------------------#
   def test_recipe_name(self):
     #get a recipe object to test
@@ -48,3 +49,17 @@ class RecipeModelTest(TestCase):
     recipe = Recipe.objects.get(id=1)
     #compare values
     self.assertEqual(recipe.calculate_difficulty(), "Easy")
+  
+  #------------------------------LISTVIEW TESTS------------------------------#
+  def test_get_absolute_url(self):
+    #get a recipe object to test
+    recipe = Recipe.objects.get(id=1)
+    #get_absolute_url() should take you to the detail page of recipe #1
+    #and load the URL /recipes/list/1
+    self.assertEqual(recipe.get_absolute_url(), '/recipes/list/1')
+
+  def test_recipes_list_view(self):
+    response = self.client.get("/recipes/list/")
+    self.assertEqual(response.status_code, 200)
+    self.assertTemplateUsed(response, "recipes/recipes_overview.html")
+  
