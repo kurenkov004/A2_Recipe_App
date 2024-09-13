@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase # type: ignore
 from .models import Recipe
 
 # Create your tests here.

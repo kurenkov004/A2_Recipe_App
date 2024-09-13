@@ -13,18 +13,37 @@ class Recipe(models.Model):
   def calculate_difficulty(self):
     ingredient_count = len(self.ingredients.split(", "))
     if self.cooking_time < 10 and ingredient_count < 4:
-      return "Easy"
+      self.difficulty =  "Easy"
     elif self.cooking_time < 10 and ingredient_count >= 4:
-      return "Medium"
+      self.difficulty = "Medium"
     elif self.cooking_time >= 10 and ingredient_count < 4:
-      return "Intermediate"
+      self.difficulty = "Intermediate"
     elif self.cooking_time >= 10 and ingredient_count >= 4:
-      return "Hard"
-    # return difficulty
+      self.difficulty = "Hard"
+    return self.difficulty
 
   def save(self, *args, **kwargs):
-    self.difficulty = self.calculate_difficulty()  # Set the difficulty level before saving.
+    self.calculate_difficulty()  # Set the difficulty level before saving.
     super().save(*args, *kwargs) # Call the parent class's save method to handle saving the instance.
+  
+  
+  
+  # #calculate recipe difficulty
+  # def calculate_difficulty(self):
+  #   ingredient_count = len(self.ingredients.split(", "))
+  #   if self.cooking_time < 10 and ingredient_count < 4:
+  #     return "Easy"
+  #   elif self.cooking_time < 10 and ingredient_count >= 4:
+  #     return "Medium"
+  #   elif self.cooking_time >= 10 and ingredient_count < 4:
+  #     return "Intermediate"
+  #   elif self.cooking_time >= 10 and ingredient_count >= 4:
+  #     return "Hard"
+  #   # return difficulty
+
+  # def save(self, *args, **kwargs):
+  #   self.difficulty = self.calculate_difficulty()  # Set the difficulty level before saving.
+  #   super().save(*args, *kwargs) # Call the parent class's save method to handle saving the instance.
   
   #string representation
   def __str__(self):

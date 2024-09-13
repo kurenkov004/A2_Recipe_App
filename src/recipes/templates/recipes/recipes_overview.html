@@ -11,11 +11,23 @@
     a {text-decoration: none; font-size: 1em;}
     .page-header {text-align: center; padding: 1%;}
     .main-container {display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; max-width: fit-content; margin: auto; }
-    .grid_item {border: solid 1px; border-radius: 5px; border-color: darkslategray; text-align: center;  background-color: rgb(235, 234, 234); }
+    .grid_item {border: solid 1px; border-radius: 5px; border-color: darkslategray; text-align: center;  background-color: rgb(235, 234, 234); padding: 10px; }
     #recipe_image {padding: 2%;}
+    .nav-bar{ margin: 0; padding: 0; overflow: hidden; background-color: #333;}
+    .nav-bar-item { float: left; display: block; color: white; text-align: center; padding: 14px 16px; text-decoration: none;}
+    .nav-bar-item:hover { background-color: #111;}
+    .active { background-color: #8aa39a;}
+    .recipe-label { border: solid 1px; border-color: #333; border-radius: 5px; margin: 10px; padding: 20px; color: #111; }
+    .recipe-label:hover { color: white; background-color: #6e6f6f;}
+
   </style>
 </head>
 <body>
+  <div class="nav-bar">
+    <a href="{%url 'recipes:about' %}" class="nav-bar-item">About</a>
+    <a href="{%url 'recipes:list' %}" class="nav-bar-item active">Recipes List</a>
+    <a href ="{%url 'success' %}" class="nav-bar-item">Logout</a>
+  </div>
   <div class="page-header">
     <h1>All recipes</h1>
   </div>
@@ -23,7 +35,7 @@
     {% for object in object_list %}
     <div class="grid_item">
       <img src="{{object.pic.url}}" width="75%" height="auto" alt="recipe_image" id="recipe_image">
-      <h2> <a href ="{{object.get_absolute_url}}"> {{object.name}}</a></h2>
+      <h2> <a href ="{{object.get_absolute_url}}" class="recipe-label"> {{object.name}}</a></h2>
     </div>
     {% endfor %}
   </div>

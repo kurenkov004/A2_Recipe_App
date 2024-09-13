@@ -12,9 +12,20 @@
     .main-container {text-align: center; max-width: 1500px; margin: auto;  background-color: rgb(240, 240, 240); border: solid 1px; border-radius: 5px; border-color: darkslategray;}
     .recipe-info {text-align: left; padding: 5%;}
     #recipe_image {padding: 5%;}
+    .nav-bar{ margin: 0; padding: 0; overflow: hidden; background-color: #333;}
+    .nav-bar-item { float: left; display: block; color: white; text-align: center; padding: 14px 16px; text-decoration: none;}
+    .nav-bar-item:hover { background-color: #111;}
+    .back-button {display: block;  background-color: #6b6b6b; border: none; border-radius: 5px; color: white; text-align: center; text-decoration: none; font-size: 16px; padding:15px 32px; margin-top: 10px;}
+    .back-button:hover {background-color: #4d4d4d;}
+
   </style>
 </head>
 <body>
+  <div class="nav-bar">
+    <a href="{%url 'recipes:about' %}" class="nav-bar-item">About</a>
+    <a href="{%url 'recipes:list' %}" class="nav-bar-item">Recipes List</a>
+    <a href ="{%url 'success' %}" class="nav-bar-item">Logout</a>
+  </div>
   <div class="page-header">
     <h1>{{object.name}}</h1>
   </div>
@@ -27,6 +38,7 @@
       <p>{{object.difficulty}} </p> 
       <h2>Ingredients: </h2> 
       <p>{{object.ingredients}}</p>
+      <a href ="{%url 'recipes:list' %}" class="back-button"> Back </a>
     </div>
   </div>
 </body>

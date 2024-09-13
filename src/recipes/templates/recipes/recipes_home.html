@@ -17,9 +17,17 @@
         .intro {grid-area: main;text-align: left; border: solid 1px; border-color: darkslategray;}
         .app-info {grid-area: right; text-align: left;  padding: 5px; border: solid 1px; border-color: darkslategray;}
         .welcome-image {grid-area: image; text-align: center;min-width: 500px; }
+        .nav-bar{ margin: 0; padding: 0; overflow: hidden; background-color: #333;}
+        .nav-bar-item { float: left; display: block; color: white; text-align: center; padding: 14px 16px; text-decoration: none;}
+        .nav-bar-item:hover { background-color: #111;}
+        .active { background-color: #8aa39a;}
     </style>
 </head>
 <body>
+    <div class="nav-bar">
+        <a href="{%url 'recipes:about' %}" class="nav-bar-item active">About</a>
+        <a href ="{%url 'login' %}" class="nav-bar-item">Login</a>
+    </div>
     <div class="main-container">
         <div class="app-header">
             <h1>RECIPE APP (in developement)</h1>
