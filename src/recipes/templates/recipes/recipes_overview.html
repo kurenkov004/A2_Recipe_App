@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,8 +10,8 @@
     h1, h2 {text-transform: uppercase;}
     p, li {font-size: 25px;}
     a {text-decoration: none; font-size: 1em;}
-    .page-header {text-align: center; padding: 1%;}
-    .main-container {display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; max-width: fit-content; margin: auto; }
+    .page-header, .search-details {text-align: left; padding: 5px .5% 5px .5%;}
+    .main-container {display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; max-width: fit-content; margin: auto; padding-left:.5%; padding-right: auto; }
     .grid_item {border: solid 1px; border-radius: 5px; border-color: darkslategray; text-align: center;  background-color: rgb(235, 234, 234); padding: 10px; }
     #recipe_image {padding: 2%;}
     .nav-bar{ margin: 0; padding: 0; overflow: hidden; background-color: #333;}
@@ -19,25 +20,78 @@
     .active { background-color: #8aa39a;}
     .recipe-label { border: solid 1px; border-color: #333; border-radius: 5px; margin: 10px; padding: 20px; color: #111; }
     .recipe-label:hover { color: white; background-color: #6e6f6f;}
+    .analytics-chart { border: solid 1px;border-color: #333; border-radius: 5px;margin: auto;}
+    #analytics_container {display: none; flex-direction: row; padding: 20px; }
+    /* #search_form_container {display: none;} */
+    .options-container {position: fixed; bottom: 0; left: 0; padding: 5px 15px 5px 15px; margin: 15px; background-color: #9ebab0; border-radius: 75px; }
+    #analytics_control, #search_control { text-decoration: none; border: none; text-align: center; align-items: center; height: 50px; width: auto; border-radius: 25%; }
+    #analytics_control:hover, #search_control:hover {background-color: #6e6f6f;}
+    #search_form {padding: 5px .5% 5px .5%; }
 
   </style>
 </head>
 <body>
   <div class="nav-bar">
     <a href="{%url 'recipes:about' %}" class="nav-bar-item">About</a>
-    <a href="{%url 'recipes:list' %}" class="nav-bar-item active">Recipes List</a>
+    <a href="{%url 'recipes:list' %}" class="nav-bar-item active">All Recipes</a>
     <a href ="{%url 'success' %}" class="nav-bar-item">Logout</a>
+    <a href="" class="nav-bar-item"></a>
   </div>
+  <div class="options-container">
+    <!-- <img src="{% static 'recipes/images/search_icon.png' %}" alt="search_icon" onclick="showHideSearch()" id="search_control" > -->
+    <img src="{% static 'recipes/images/graph_up_icon.png' %}" alt="graph_up_icon" onclick="showHideAnalytics()" id="analytics_control" >
+  </div>
+  <div id="analytics_container">
+    <img src="data:image/png;base64, {{top_ing_chart|safe}}" alt="" class="analytics-chart">
+    <img src="data:image/png;base64, {{difficulty_spread_chart|safe}}" alt="" class="analytics-chart">
+    <img src="data:image/png;base64, {{difficulty_and_time_chart|safe}}" alt="" class="analytics-chart">
+  </div>
+  <div id="search_form_container">
+    <h2 class="page-header" >Search for recipes</h2>
+    <hr>
+    <form action="" method="GET" id="search_form">
+      {{search_form}}
+      <button type="submit" >search</button>
+    </form>
+  </div>
+  
   <div class="page-header">
-    <h1>All recipes</h1>
+    <!-- <h1>All recipes</h1> -->
   </div>
+
+  <h2 class="page-header">{{ main_title }}</h2>
+    {% if search_details %}
+    <h3 class="search-details">{{ search_details }}</h3>
+    {% endif %}
+
   <div class="main-container">
     {% for object in object_list %}
     <div class="grid_item">
-      <img src="{{object.pic.url}}" width="75%" height="auto" alt="recipe_image" id="recipe_image">
+      <img src="{{object.pic_url}}" width="75%" height="auto" alt="recipe_image" id="recipe_image">
       <h2> <a href ="{{object.get_absolute_url}}" class="recipe-label"> {{object.name}}</a></h2>
     </div>
     {% endfor %}
   </div>
+
+
+  <script>
+    function showHideAnalytics() {
+      let x = document.getElementById("analytics_container");
+      if (x.style.display === 'none') {
+        x.style.display = 'flex';
+      } else {
+        x.style.display = 'none'
+      }
+    }
+
+    function showHideSearch() {
+      let x = document.getElementById("search_form_container");
+      if (x.style.display === 'none') {
+        x.style.display = 'block';
+      } else {
+        x.style.display = 'none'
+      }
+    }
+  </script>
 </body>
 </html>
