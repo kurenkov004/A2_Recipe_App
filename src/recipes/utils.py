@@ -1,7 +1,7 @@
 from .models import Recipe
 from io import BytesIO
 import base64
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt # type: ignore
 from collections import Counter
 
 def get_graph():

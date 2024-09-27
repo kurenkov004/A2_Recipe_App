@@ -1,15 +1,16 @@
 from typing import Any
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.shortcuts import render # type: ignore
+from django.views.generic import ListView, DetailView # type: ignore
 from .models import Recipe
 from .utils import get_top_ingredients_chart, get_difficulty_spread_chart, get_cooking_time_by_difficulty_chart
 
 #to protect class-based views
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin # type: ignore
+
 
 #search functionality imports
 from .forms import RecipeSearchForm
-import pandas as pd
+import pandas as pd # type: ignore
 
 
 # Create your views here.

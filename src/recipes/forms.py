@@ -1,4 +1,4 @@
-from django import forms
+from django import forms # type: ignore
 
 CHART_CHOICES = (
   ('#1', 'Bar chart'),    
