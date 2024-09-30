@@ -9,8 +9,8 @@ https://docs.djangoproject.com/en/4.2/howto/deployment/wsgi/
 
 import os
 
-from django.core.wsgi import get_wsgi_application
+from django.core.wsgi import get_wsgi_application # type: ignore
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'recipe_project.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "recipe_project.settings")
 
 application = get_wsgi_application()

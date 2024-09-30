@@ -1,24 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Recipe details</title>
-  <style>
-    body {background-color: rgb(244, 245, 245); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;}
-    h1, h2, h3 {text-transform: uppercase;}
-    p {font-size: 30px;}
-    .page-header {text-align: center; padding: 1%;}
-    .main-container {text-align: center; max-width: 1200px; margin: auto; justify-content: center;  background-color: rgb(240, 240, 240); border: solid 1px; border-radius: 5px; border-color: darkslategray;}
-    .recipe-info {text-align: left; padding: 5%;width: 90%;}
-    #recipe_image {padding: 5%;width: 90%; height: auto;}
-    .nav-bar{ margin: 0; padding: 0; overflow: hidden; background-color: #333;}
-    .nav-bar-item { float: left; display: block; color: white; text-align: center; padding: 14px 16px; text-decoration: none;}
-    .nav-bar-item:hover { background-color: #111;}
-    .back-button {display: block;  background-color: #6b6b6b; border: none; border-radius: 5px; color: white; text-align: center; text-decoration: none; font-size: 16px; padding:15px 32px; margin-top: 10px;}
-    .back-button:hover {background-color: #4d4d4d;}
-
-  </style>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
   <div class="nav-bar">
@@ -26,12 +14,12 @@
     <a href="{%url 'recipes:list' %}" class="nav-bar-item">Recipes List</a>
     <a href ="{%url 'success' %}" class="nav-bar-item">Logout</a>
   </div>
-  <div class="page-header">
+  <div class="details-page-header">
     <h1>{{object.name}}</h1>
   </div>
-  <div class="main-container">
-    <img src="{{object.pic.url}}" alt="recipe_image" id="recipe_image">
-    <div class="recipe-info">
+  <div class="details-container">
+    <img src="{{object.pic.url}}" alt="recipe_image" id="details_recipe_image">
+    <div class="details-recipe-info">
       <h2>Cooking time (in minutes):</h2>
       <p>{{object.cooking_time}}</p> 
       <h2>Difficulty: </h2>
@@ -39,7 +27,31 @@
       <h2>Ingredients: </h2> 
       <p>{{object.ingredients}}</p>
       <a href ="{%url 'recipes:list' %}" class="back-button"> Back </a>
+      <button type="button" id="updateRecipeButton" class="back-button">Update Recipe</button>
+      <button type="button" id="deleteRecipeButton" class="delete-button" data-recipe-id="{{ object.id }}">Delete Recipe</button>
     </div>
   </div>
+  <!-- update recipe modal -->
+  <div id="update_recipe_modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Update recipe:</h3>
+      <form action="{% url 'recipes:update_recipe' object.id %}" id="update_recipe_form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" id="update_recipe_button">Update Recipe</button>
+      </form>
+    </div>
+  </div>
+  <!-- confirm delete modal -->
+  <div id="delete_recipe_modal" class="modal" >
+    <div class="modal-content">
+      <span class="close" id="closeDeleteModal">&times;</span>
+      <h3>Are you sure? This action cannnot be undone.</h3>
+      <button type="button" id="confirmDeleteButton" class="delete-button">Confirm Delete</button>
+    </div>
+  </div>
+  <!-- external JS -->
+  <script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

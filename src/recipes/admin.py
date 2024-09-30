@@ -4,10 +4,11 @@
 # # Register your models here.
 # admin.site.register(Recipe)
 
-from django.contrib import admin
+from django.contrib import admin #type:ignore
 from .models import Recipe
+
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-  list_display = ('name', 'cooking_time', 'difficulty')
-  readonly_fields = ('difficulty',)
+    list_display = ("name", "cooking_time", "difficulty")
+    readonly_fields = ("difficulty",)
