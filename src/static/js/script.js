@@ -70,48 +70,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// add_recipe modal functionality
-// document.addEventListener('DOMContentLoaded', function () {
-//   // Retrieves the form element for adding a recipe by its ID.
-//   const addRecipeForm = document.getElementById('addRecipeForm');
-
-//   // Checks if the form exists to prevent errors if it's not present.
-//   if (addRecipeForm) {
-//       // Retrieves the URL for posting the form data from a data attribute on the form.
-//       const postUrl = addRecipeForm.getAttribute('data-post-url');
-
-//       // Adds an event listener to handle the form submission.
-//       addRecipeForm.addEventListener('submit', function (e) {
-//           // Prevents the default form submission mechanism to handle the submission via JavaScript.
-//           e.preventDefault();
-
-//           // Creates a new FormData object, capturing the form's current values.
-//           const formData = new FormData(addRecipeForm);
-
-//           // Executes a fetch request to submit the form data to the server.
-//           fetch(postUrl, {
-//               method: 'POST', // Specifies the request method.
-//               body: formData, // Attaches the form data as the request body.
-//               headers: {
-//                   // Includes a CSRF token in the request headers for security purposes.
-//                   'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-//               },
-//               credentials: 'same-origin' // Ensures cookies are sent with the request if the URL is on the same origin.
-//           })
-//               .then(response => response.json()) // Parses the JSON response from the server.
-//               .then(data => {
-//                   // Checks if the server responded with a success status.
-//                   if (data.status === 'success') {
-//                       // Closes the recipe modal by hiding it.
-//                       document.getElementById('addRecipeModal').style.display = 'none';
-//                       // Reloads the page to reflect any changes made by the form submission.
-//                       window.location.reload();
-//                   }
-//               })
-//               .catch(error => console.error('Error:', error)); // Logs any errors that occur during the fetch request.
-//       });
-//   }
-// });
 
 document.addEventListener('DOMContentLoaded', function() {
   // retrieves necessary HTML elements
