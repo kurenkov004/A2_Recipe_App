@@ -12,9 +12,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin  # type: ignore
 from .forms import RecipeSearchForm, RecipeForm
 import pandas as pd  # type: ignore
 import json
-from django.views.decorators.http import require_POST#type:ignore
+from django.views.decorators.http import require_POST, require_http_methods #type:ignore
 from django.contrib.auth.decorators import login_required #type:ignore
 from json.decoder import JSONDecodeError
+from django.contrib import messages #type:ignore
+from django.conf import settings #type:ignore
+import os
 
 
 # Create your views here.
@@ -126,38 +129,42 @@ def add_recipe(request):
     # Handle non-POST methods
     return JsonResponse({'status': 'invalid_method'})
 
+
 @login_required
 def update_recipe(request, pk):
     #retrieve selected recipe
     recipe = get_object_or_404(Recipe, pk=pk)
     if request.method == 'POST':
         form = RecipeForm(request.POST, request.FILES, instance=recipe)
-        print(form)
+
         if form.is_valid():
             form.save()
-            return redirect('recipes:detail', pk=recipe.pk)
+
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({'message': 'Recipe updated successfully!'}, status=200)
+            else:
+                return redirect('recipes:detail', pk=recipe.pk)  # Redirect to a recipe detail view
+        else:
+            # Handle form errors for AJAX requests
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                # Send the form errors in JSON format
+                return JsonResponse({'errors': form.errors}, status=400)
     else:
-        # If not a POST request, instantiate the form with the existing recipe
+        # For GET request, pre-populate the form with the existing recipe data
         form = RecipeForm(instance=recipe)
     
-    # Render the template with the form and recipe instance
+    # Render the form (for non-AJAX requests or in case of GET request)
     return render(request, 'recipes/recipe_details.html', {'form': form, 'object': recipe})
+
+    
 
 @login_required
 @require_POST
 def delete_recipe(request, pk):
     try:
-        #try to parse the request body as JSON
-        data = json.loads(request.body)
-        confirmation_text = data.get('confirmation_text', '')
-
-        if confirmation_text == 'DELETE RECIPE':
-            # Look up the Recipe object with the provided primary key (pk) and delete it
-            recipe = get_object_or_404(Recipe, pk=pk)
-            recipe.delete()
-            return JsonResponse({'status': 'success'})
-        else:
-            return JsonResponse({'status': 'error', 'message': 'Incorrect confirmation text'})
+        recipe = get_object_or_404(Recipe, pk=pk)
+        recipe.delete()
+        return JsonResponse({'status': 'success'})
     except JSONDecodeError:
         # Handle cases where the request body does not contain valid JSON
         return JsonResponse({'status': 'error', 'message': 'Invalid JSON data'}, status=400)

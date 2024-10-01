@@ -1,122 +1,211 @@
-function showHideAnalytics() {
-  let x = document.getElementById("analytics_container");
-  if (x.style.display === 'none') {
-    x.style.display = 'block';
-  } else {
-    x.style.display = 'none'
+
+//   function showHideAnalytics() {
+//   let x = document.getElementById("analytics_container");
+//   if (x.style.display === 'none') {
+//     x.style.display = 'block';
+//   } else {
+//     x.style.display = 'none'
+//   }
+// }
+
+//function to show/hide analysis charts
+document.addEventListener('DOMContentLoaded',function showHideAnalytics () {
+  const analyticsControlButton = document.getElementById('analytics_control');
+  const analyticsContainer = document.getElementById('analytics_container');
+
+  if (analyticsControlButton) {
+    analyticsControlButton.addEventListener('click', function() {
+      if(analyticsContainer.style.display == 'none') {
+        analyticsContainer.style.display = 'block';
+      } else {
+        analyticsContainer.style.display = 'none';
+      }
+    })
   }
-}
+})
 
 //add_recipe_form logic
-(function () {
-  // Retrieves the form element for adding a recipe by its ID.
-  const addRecipeForm = document.getElementById('add_recipe_form');
+document.addEventListener('DOMContentLoaded', function () {
+  // Grab the form and button
+  const recipeForm = document.getElementById('recipeForm');
+  const saveRecipeBtn = document.getElementById('saveRecipeBtn');
 
-  if (addRecipeForm) {
-    // Retrieves the URL for posting the form data from a data attribute on the form.
-    const postUrl = addRecipeForm.getAttribute('data-post-url');
+  // Add an event listener for form submission
+  recipeForm.addEventListener('submit', function (e) {
+      e.preventDefault();  // Prevent the default form submission
 
-    // Adds an event listener to handle the form submission.
-    addRecipeForm.addEventListener('submit', function (e) {
-      // Prevents the default form submission mechanism to handle the submission via JavaScript.
-      e.preventDefault();
+      // Create a FormData object to serialize the form data
+      const formData = new FormData(recipeForm);
+      const postUrl = recipeForm.getAttribute('data-post-url');
 
-      // Creates a new FormData object, capturing the form's current values.
-      const formData = new FormData(addRecipeForm);
-
-      // Executes a fetch request to submit the form data to the server.
+      // Send the AJAX request using the Fetch API
       fetch(postUrl, {
-        method: 'POST', // Specifies the request method.
-        body: formData, // Attaches the form data as the request body.
-        headers: {
-          // Includes a CSRF token in the request headers for security purposes.
-          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-        },
-        credentials: 'same-origin' // Ensures cookies are sent with the request if the URL is on the same origin.
+          method: 'POST',
+          headers: {
+              'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+          },
+          body: formData,
+          credentials: 'same-origin' // Ensures cookies are sent with the request if the URL is on the same origin.
       })
-      .then(response => response.json()) // Parses the JSON response from the server.
+      .then(response => {
+          if (response.ok) {
+              return response.json();  // Parse the JSON response
+          } else {
+              return response.json().then(err => { throw err });  // Handle errors
+          }
+      })
       .then(data => {
-        // Checks if the server responded with a success status.
-        if (data.status === 'success') {
-          // Closes the recipe modal by hiding it.
-          document.getElementById('add_recipe_modal').style.display = 'none';
-          // Reloads the page to reflect any changes made by the form submission.
-          window.location.reload();
+          // Checks if the server responded with a success status.
+          if (data.status === 'success') {
+            // Closes the recipe modal by hiding it.
+            document.getElementById('addRecipeModal').style.display = 'none';
+            // Reloads the page to reflect any changes made by the form submission.
+            window.location.reload();
         }
-      }).catch(error => console.error('Error:', error)); // Logs any errors that occur during the fetch request.
-    });
-  }
+    })
+      .catch(error => {
+          // Handle errors - show error message inside the modal
+          document.getElementById('form-alert').innerHTML = "<div class='alert alert-danger'>There was an error: " + error.message + "</div>";
+      });
+  });
 });
 
 // add_recipe modal functionality
-(function () {
+// document.addEventListener('DOMContentLoaded', function () {
+//   // Retrieves the form element for adding a recipe by its ID.
+//   const addRecipeForm = document.getElementById('addRecipeForm');
+
+//   // Checks if the form exists to prevent errors if it's not present.
+//   if (addRecipeForm) {
+//       // Retrieves the URL for posting the form data from a data attribute on the form.
+//       const postUrl = addRecipeForm.getAttribute('data-post-url');
+
+//       // Adds an event listener to handle the form submission.
+//       addRecipeForm.addEventListener('submit', function (e) {
+//           // Prevents the default form submission mechanism to handle the submission via JavaScript.
+//           e.preventDefault();
+
+//           // Creates a new FormData object, capturing the form's current values.
+//           const formData = new FormData(addRecipeForm);
+
+//           // Executes a fetch request to submit the form data to the server.
+//           fetch(postUrl, {
+//               method: 'POST', // Specifies the request method.
+//               body: formData, // Attaches the form data as the request body.
+//               headers: {
+//                   // Includes a CSRF token in the request headers for security purposes.
+//                   'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+//               },
+//               credentials: 'same-origin' // Ensures cookies are sent with the request if the URL is on the same origin.
+//           })
+//               .then(response => response.json()) // Parses the JSON response from the server.
+//               .then(data => {
+//                   // Checks if the server responded with a success status.
+//                   if (data.status === 'success') {
+//                       // Closes the recipe modal by hiding it.
+//                       document.getElementById('addRecipeModal').style.display = 'none';
+//                       // Reloads the page to reflect any changes made by the form submission.
+//                       window.location.reload();
+//                   }
+//               })
+//               .catch(error => console.error('Error:', error)); // Logs any errors that occur during the fetch request.
+//       });
+//   }
+// });
+
+document.addEventListener('DOMContentLoaded', function() {
   // retrieves necessary HTML elements
-  const addRecipeButton = document.getElementById('addRecipeButton');
-  const addRecipeModal = document.getElementById('add_recipe_modal');
+  const openModalButton = document.getElementById('openAddRecipeBtn');
+  const addRecipeModal = document.getElementById('addRecipeModal');
+  const closeModalSpan = document.getElementById('closeAddRecipeModal');
 
-  //look for  'close' span element
-  const closeModalSpan = addRecipeModal ? addRecipeModal.querySelector('.close') : null;
-
-  //function to display add_recipe_modal
-  const openAddRecipeModal = () => {
-    if (addRecipeModal) {
-      addRecipeModal.style.display = 'block';
-    }
-  }
-  //function to hide add_recipe_modal
-  const closeAddRecipeModal = () => {
-    if (addRecipeModal) {
-      addRecipeModal.style.display = 'none';
-    }
-  }
   //addRecipeButton functionality
-  if (addRecipeButton) {
-    addRecipeButton.addEventListener('click', openAddRecipeModal);
+  if (openModalButton){
+    openModalButton.addEventListener('click', ()=> {
+      addRecipeModal.style.display = 'block';
+    });
   }
+    
   //closeModal functionality
   if (closeModalSpan) {
-    closeModalSpan.addEventListener('click', closeAddRecipeModal);
+    closeModalSpan.addEventListener('click', ()=> {
+      addRecipeModal.style.display = 'none';
+    });
   }
   //logic to hide modal if user clicks outside of it
   window.addEventListener('click', function (e) {
     if (e.target == addRecipeModal) {
-      closeAddRecipeModal();
+      addRecipeModal.style.display = 'none';
     }
   });
 })
 
-//function to update recipe
+
+//update recipe modal functionality
 document.addEventListener('DOMContentLoaded',function () {
   //retrieve button element that opens updateModal
-  const updateButton = document.getElementById('updateRecipeButton');
+  const updateButton = document.getElementById('openUpdateModalButn');
+  const updateModal = document.getElementById('updateRecipeModal');
+  const closeUpdateModal = document.getElementById('closeUpdateModal');
 
-  if (updateButton) {
-    //retrieve modal element that holds update logic & the close modal element
-    const updateModal = document.getElementById('update_recipe_modal');
-    const closeUpdateModal = document.querySelector('#update_recipe_modal .close');
-
-    //logic to open the modal onClick of updateButton
+  //logic to open the modal onClick of updateButton
+  if(updateButton) {
     updateButton.addEventListener('click', ()=>{
       if (updateModal) {
         updateModal.style.display = 'block';
       }
     });
-    //logic to close modal
-    if (closeUpdateModal) {
-      closeUpdateModal.addEventListener('click', ()=> {
-        if (updateModal) {
-          updateModal.style.display == 'none';
-        }
-      });
-    }
+  }
+  //logic to close modal
+  if (closeUpdateModal) {
+    closeUpdateModal.addEventListener('click', ()=> {
+      updateModal.style.display = 'none';
+    });
+  }
     //logic to hide modal if user clicks outside of it
     window.addEventListener('click', (e)=> {
       if (e.target == updateModal) {
         updateModal.style.display = 'none';
       }
     });
-  }
+  
 })
+
+
+//update recipe form logic
+document.addEventListener('DOMContentLoaded', function () {
+  const updateRecipeForm = document.getElementById('updateRecipeForm');
+
+  updateRecipeForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(updateRecipeForm);
+
+    fetch(updateRecipeForm.action, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+      },
+      body: formData
+    })
+    .then(response => {
+      if(response.ok) {
+        return response.json();
+      } else {
+        return response.json().then(err => { throw err})
+      }
+    })
+    .then(data => {
+      if (data.status === 'success') {
+        // Closes the recipe modal by hiding it.
+        document.getElementById('updateRecipeModal').style.display = 'none';
+        // Reloads the page to reflect any changes made by the form submission.
+        window.location.reload();
+    }
+    });
+  });
+});
+
 
 //deleting the recipe functionality
 document.addEventListener('DOMContentLoaded', function () {
@@ -203,4 +292,3 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 })
 
-//

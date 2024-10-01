@@ -10,6 +10,6 @@ urlpatterns = [
     path("list/<pk>", RecipeDetailView.as_view(), name="detail"),
     path("about/", home, name="about"),
     path("add/", add_recipe, name="add_recipe"),
-    path('update/<int:pk>/', update_recipe, name='update_recipe'),
-    path('delete/<int:pk>/', csrf_exempt(delete_recipe), name='delete_recipe'), #exempt from CSRF checks, using 'pk' as a placeholder for the recipe ID
+    path('update/<pk>/', update_recipe, name='update_recipe'),
+    path('delete/<pk>/', csrf_exempt(delete_recipe), name='delete_recipe'), #exempt from CSRF checks, using 'pk' as a placeholder for the recipe ID
 ]

@@ -28,18 +28,21 @@ class RecipeSearchForm(forms.Form):
     )
 
 #class-based form for adding recipes
-class RecipeForm(ModelForm):
-    #field definition for recipe image, makes it optional
-    pic = forms.ImageField(label='Image', required=False, widget=forms.FileInput(attrs={'class': 'form-control picture-change'}))
-
+class RecipeForm(forms.ModelForm):
+    # Custom field definition for the recipe image, making it optional and applying custom styling.
+    pic = forms.ImageField(label='Picture', required=False, widget=forms.FileInput(attrs={'class': 'form-control picture-change'}))
+    
     class Meta:
-        model = Recipe #model used to generate this form
-        fields = ['name', 'ingredients', 'cooking_time', 'pic'] #model fields
+        model = Recipe # Specify the model to be used to generate this form.
+        fields = ['name', 'ingredients', 'cooking_time', 'pic']
+        # Define custom widgets for form fields, applying Bootstrap 'form-control' class for styling.
         widgets = {
-            'name': TextInput(attrs={'class':'form-control'}),
-            'ingredients': TextInput(attrs={'class':'form-control'}),
-            'cooking_time': NumberInput(attrs={'class':'form-control'}),
+            'name': TextInput(attrs={'class': 'form-control'}),
+            'ingredients': TextInput(attrs={'class': 'form-control'}),
+            'cooking_time': NumberInput(attrs={'class': 'form-control'}),
+            'pic': FileInput(attrs={'class': 'form-control','id': 'pic_select'})
         }
+
 
 #form for adding users
 class ModUserCreationForm(UserCreationForm):
