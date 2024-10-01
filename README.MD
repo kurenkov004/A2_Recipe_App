@@ -22,24 +22,32 @@ This app specifically is a Recipe web app which can create, read, and modify rec
 
 ## Set up and installation
 
-1. Clone the repository:
+### 1. Clone the repository:
 ```
 git clone [repository URL] cd recipe-app
 ```
 
-2. Install dependencies:
-```pip install -r requirements.txt```
+### 2. Install dependencies:
+```
+pip install -r requirements.txt
+```
 
-3. Set up database:
+### 3. Set up database:
 Adjust ```Databases``` configuration in ```settings.py``` as per your development and production environments.
 
-4. Run migrations
-```py manage.py migrate```
+### 4. Run migrations
+```
+py manage.py migrate
+```
 
-5. Create Superuser for admin access:
-```py manage.py createsuperuser```
+### 5. Create Superuser for admin access:
+```
+py manage.py createsuperuser
+```
 
-6. Run development server:
-```py manage.py runserver```
+### 6. Run development server:
+```
+py manage.py runserver
+```
 
-Development server can be acessed at ```http://127.0.0.1:8000``` in your browser.
+- Development server can be acessed at ```http://127.0.0.1:8000``` in your browser.
